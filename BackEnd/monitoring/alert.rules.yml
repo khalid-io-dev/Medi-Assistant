@@ -1,0 +1,113 @@
+groups:
+- name: CliniQ-alerts
+  rules:
+  
+  # Latency Alert
+  - alert: HighRequestLatency
+    expr: rag_processing_seconds_sum / rag_processing_seconds_count > 5
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High RAG Request Latency"
+      description: "Average RAG request processing time is > 5s (current value: {{ $value }}s)"
+
+  # Error Rate Alert
+  - alert: HighErrorRate
+    expr: rate(rag_request_total{status="error"}[5m]) > 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High RAG Error Rate"
+      description: "RAG requests are failing"
+
+
+  # ================================
+  # RAG LATENCY HIGH (p95 > 5s)
+  # ================================
+  - alert: HighRAGLatency
+    expr: |
+      histogram_quantile(
+        0.95,
+        sum(rate(rag_processing_seconds_bucket[5m])) by (le)
+      ) > 5
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "RAG latency is too high"
+      description: "p95 RAG processing time is above 5 seconds for more than 2 minutes."
+
+  # ================================
+  # HYBRID SEARCH SLOW
+  # ================================
+  - alert: SlowHybridSearch
+    expr: |
+      histogram_quantile(
+        0.95,
+        sum(rate(rag_search_duration_seconds_bucket[5m])) by (le)
+      ) > 2
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Hybrid search is slow"
+      description: "p95 Hybrid search duration is above 2 seconds."
+
+  # ================================
+  # TOO MANY HTTP ERRORS (5xx)
+  # ================================
+  - alert: HighHTTPErrorRate
+    expr: |
+      sum(rate(api_request_total{status=~"5.."}[5m]))
+      /
+      sum(rate(api_request_total[5m]))
+      > 0.1
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "High HTTP error rate"
+      description: "More than 10% of API requests are failing with 5xx."
+
+  # ================================
+  # TOO FEW DOCUMENTS RETRIEVED
+  # ================================
+  - alert: LowDocumentsRetrieved
+    expr: |
+      (
+        rate(rag_final_docs_count_sum[5m])
+        /
+        rate(rag_final_docs_count_count[5m])
+      ) < 1
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Too few documents returned"
+      description: "Average number of final retrieved documents is less than 1."
+
+  # ================================
+  # HIGH MEMORY USAGE (> 800MB)
+  # ================================
+  - alert: HighMemoryUsage
+    expr: process_resident_memory_bytes > 800 * 1024 * 1024
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High memory usage detected"
+      description: "Process memory usage exceeded 800MB."
+
+  # ================================
+  # RAG NOT RECEIVING REQUESTS
+  # ================================
+  - alert: RAGDown
+    expr: rate(rag_request_total[5m]) == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "No RAG traffic detected"
+      description: "No RAG requests received in the last 5 minutes."

@@ -1,0 +1,242 @@
+[
+  {
+    "question": "Quelle est la cause la plus fréquente de la diarrhée chez l’enfant ?",
+    "expected_answer": "La diarrhée chez l’enfant est le plus souvent due à une infection virale du tube digestif appelée gastro-entérite."
+  },
+  {
+    "question": "Quel est le principal risque de la diarrhée chez l’enfant ?",
+    "expected_answer": "Le principal risque est la déshydratation pouvant entraîner un choc hypovolémique et la mort."
+  },
+  {
+    "question": "Quel traitement agit directement contre les virus responsables de gastro-entérite ?",
+    "expected_answer": "Il n’existe aucun traitement agissant directement contre les virus responsables de gastro-entérite."
+  },
+  {
+    "question": "Quelle est la priorité thérapeutique en cas de diarrhée chez l’enfant ?",
+    "expected_answer": "La priorité est de traiter la déshydratation et d’assurer une hydratation suffisante."
+  },
+  {
+    "question": "Que ne faut-il pas donner à boire à un enfant diarrhéique ?",
+    "expected_answer": "Il ne faut pas donner de boissons type Coca Cola ou jus du commerce car elles aggravent la diarrhée."
+  },
+  {
+    "question": "Quel médicament est recommandé pour réhydrater un enfant diarrhéique ?",
+    "expected_answer": "Les sels de réhydratation orale sont recommandés."
+  },
+  {
+    "question": "Quel signe accompagne généralement une toux liée à une pathologie grave ?",
+    "expected_answer": "Une toux grave s’accompagne généralement d’une gêne respiratoire nette."
+  },
+  {
+    "question": "À partir de combien de temps de toux faut-il penser à la tuberculose ?",
+    "expected_answer": "Il faut penser à la tuberculose lorsque la toux dure plus de trois semaines."
+  },
+  {
+    "question": "Quel examen doit être réalisé devant une toux bronchique de trois semaines ?",
+    "expected_answer": "Une radiographie thoracique doit être réalisée."
+  },
+  {
+    "question": "Pourquoi ne faut-il pas prescrire d’antitussifs chez l’enfant ?",
+    "expected_answer": "Parce que la toux est un mécanisme physiologique et le rapport bénéfice-risque des antitussifs est défavorable."
+  },
+  {
+    "question": "Quel score permet d’évaluer la détresse respiratoire chez l’enfant ?",
+    "expected_answer": "Le score de Silverman permet d’évaluer la détresse respiratoire."
+  },
+  {
+    "question": "À partir de quel score de Silverman la détresse respiratoire est-elle importante ?",
+    "expected_answer": "La détresse respiratoire est importante lorsque le score de Silverman est supérieur à 3."
+  },
+  {
+    "question": "Quel signe apparaît en premier lors d’une détresse respiratoire ?",
+    "expected_answer": "Le battement des ailes du nez apparaît en premier."
+  },
+  {
+    "question": "Quelle est la cause la plus fréquente de bronchiolite ?",
+    "expected_answer": "La bronchiolite est le plus souvent d’origine virale."
+  },
+  {
+    "question": "Quelle position doit adopter un enfant dyspnéique ?",
+    "expected_answer": "L’enfant doit être placé en position demi-assise ou assise."
+  },
+  {
+    "question": "Quelle température définit la fièvre chez l’enfant ?",
+    "expected_answer": "La fièvre est définie par une température rectale supérieure ou égale à 38°C."
+  },
+  {
+    "question": "La fièvre est-elle dangereuse en elle-même ?",
+    "expected_answer": "La fièvre n’est pas dangereuse en elle-même en dessous de 40,5°C, c’est la maladie sous-jacente qui l’est."
+  },
+  {
+    "question": "Quel antipyrétique est recommandé en première intention chez l’enfant ?",
+    "expected_answer": "Le paracétamol est recommandé en première intention."
+  },
+  {
+    "question": "Quelle est la dose quotidienne recommandée de paracétamol chez l’enfant ?",
+    "expected_answer": "La dose recommandée est de 60 mg/kg/j répartie en plusieurs prises."
+  },
+  {
+    "question": "Pourquoi ne faut-il pas prescrire d’antibiotiques systématiquement en cas de fièvre ?",
+    "expected_answer": "Parce que les antibiotiques n’agissent que sur les infections bactériennes et non virales."
+  },
+  {
+    "question": "Quelle est la cause la plus fréquente de douleurs abdominales chez l’enfant avec diarrhée et fièvre ?",
+    "expected_answer": "La cause la plus fréquente est la gastro-entérite aiguë virale."
+  },
+  {
+    "question": "Quel diagnostic évoquer devant douleurs abdominales avec brûlures urinaires et fièvre ?",
+    "expected_answer": "Il faut évoquer une infection urinaire."
+  },
+  {
+    "question": "Quel diagnostic évoquer devant douleur abdominale avec absence de selles et douleurs à la défécation ?",
+    "expected_answer": "Il faut évoquer une constipation."
+  },
+  {
+    "question": "Quel diagnostic évoquer devant douleurs abdominales avec rectorragies chez le nourrisson ?",
+    "expected_answer": "Il faut évoquer une invagination intestinale aiguë."
+  },
+  {
+    "question": "Quel diagnostic évoquer chez un enfant avec douleur en fosse iliaque droite et fièvre ?",
+    "expected_answer": "Il faut évoquer une appendicite."
+  },
+  {
+    "question": "Quel signe cutané typique apparaît après une piqûre de méduse ?",
+    "expected_answer": "Un érythème rouge-marron ou violacé en forme de coup de fouet apparaît."
+  },
+  {
+    "question": "Pourquoi ne faut-il pas rincer une piqûre de méduse à l’eau douce ?",
+    "expected_answer": "Parce que l’eau douce fait éclater les nématocystes et aggrave l’envenimation."
+  },
+  {
+    "question": "Quel est le premier geste à faire en cas de piqûre de méduse ?",
+    "expected_answer": "Il faut retirer les filaments visibles puis rincer abondamment à l’eau de mer."
+  },
+  {
+    "question": "Quelle est la principale priorité face à un patient agité ?",
+    "expected_answer": "La priorité est d’assurer la sécurité du personnel, du patient et de l’entourage."
+  },
+  {
+    "question": "Quel médicament peut être utilisé en cas d’agitation psychiatrique sévère ?",
+    "expected_answer": "La loxapine peut être utilisée en cas d’agitation psychiatrique sévère."
+  },
+  {
+    "question": "Comment est définie la fièvre chez l’enfant ?",
+    "expected_answer": "La fièvre est définie par une température rectale ≥ 38°C. En cas de mesure axillaire, il faut ajouter 0,5°C."
+  },
+  {
+    "question": "Quelle est la dose recommandée de paracétamol chez l’enfant en cas de fièvre ?",
+    "expected_answer": "La dose recommandée est de 60 mg/kg/j répartie en 4 à 6 prises, soit environ 15 mg/kg toutes les 6 heures."
+  },
+  {
+    "question": "Quelle est la posologie maximale du paracétamol chez l’enfant ?",
+    "expected_answer": "La posologie maximale est de 80 mg/kg/j chez l’enfant de moins de 37 kg et 3 g/j au-delà."
+  },
+  {
+    "question": "Que faut-il faire devant toute fièvre chez un nourrisson de moins de 4 mois ?",
+    "expected_answer": "Toute fièvre chez un nourrisson de moins de 4 mois nécessite un avis médical."
+  },
+  {
+    "question": "Quels signes de gravité respiratoire doivent être recherchés devant une toux chez l’enfant ?",
+    "expected_answer": "Cyanose, polypnée, apnée, sueurs, difficultés à s’alimenter ou à parler, faible réactivité, fatigue."
+  },
+  {
+    "question": "À quoi faut-il penser devant une toux qui dure plus de trois semaines ?",
+    "expected_answer": "Il faut penser à la tuberculose et réaliser une radio de thorax."
+  },
+  {
+    "question": "Quel est le traitement principal de la déshydratation en cas de diarrhée chez l’enfant ?",
+    "expected_answer": "Le traitement repose sur les sels de réhydratation orale (SRO) et la surveillance clinique."
+  },
+  {
+    "question": "Que ne faut-il pas proposer en cas de diarrhée chez l’enfant ?",
+    "expected_answer": "Il ne faut pas proposer de boissons type Coca ou jus industriels ni d’anti-diarrhéiques."
+  },
+  {
+    "question": "Faut-il arrêter le lait en cas de diarrhée chez l’enfant ?",
+    "expected_answer": "Non, il ne faut pas arrêter le lait ni mettre l’enfant à jeun."
+  },
+  {
+    "question": "Quelle est la cause la plus fréquente de la diarrhée aiguë chez l’enfant ?",
+    "expected_answer": "La diarrhée est le plus souvent d’origine virale."
+  },
+  {
+    "question": "Quels sont les signes cliniques d’une otite moyenne aiguë ?",
+    "expected_answer": "Fièvre, douleur auriculaire, tympan rouge et bombé, souvent associée à une rhinopharyngite."
+  },
+  {
+    "question": "Quel est le signe principal d’une otite séro-muqueuse ?",
+    "expected_answer": "Une baisse de l’audition se traduisant par des difficultés scolaires ou un retard de langage."
+  },
+  {
+    "question": "Comment se transmet la gale ?",
+    "expected_answer": "La gale se transmet par contact cutané direct prolongé d’au moins une heure."
+  },
+  {
+    "question": "Combien de temps survit le sarcopte en dehors de l’hôte ?",
+    "expected_answer": "La survie maximale est de 48 heures hors de l’hôte."
+  },
+  {
+    "question": "Quelle est la période d’incubation moyenne de la gale ?",
+    "expected_answer": "La période d’incubation moyenne est de 3 semaines."
+  },
+  {
+    "question": "Quelle est la différence entre douleur mécanique et douleur inflammatoire articulaire ?",
+    "expected_answer": "La douleur mécanique survient à l’activité et s’améliore au repos, tandis que la douleur inflammatoire survient au repos et s’améliore à l’activité."
+  },
+  {
+    "question": "Quelle est la principale caractéristique de la douleur inflammatoire articulaire le matin ?",
+    "expected_answer": "Un dérouillage matinal prolongé supérieur à 45 minutes."
+  },
+  {
+    "question": "Que faut-il faire devant une agitation non contrôlable ?",
+    "expected_answer": "Mettre en place une contention physique et chimique si nécessaire et référer au Centre 15."
+  },
+  {
+    "question": "Quelles causes organiques doivent être éliminées devant une agitation ?",
+    "expected_answer": "Alcoolisation aiguë, intoxication, hypoglycémie, traumatisme crânien, infection du système nerveux central."
+  },
+  {
+    "question": "Quelle est la dose recommandée de ceftriaxone chez l’adulte sauf cas particulier ?",
+    "expected_answer": "La ceftriaxone doit être prescrite à 1 gramme par jour IV ou IM."
+  },
+  {
+    "question": "Dans quels cas une antibiothérapie n’est-elle pas recommandée en cas de fièvre isolée ?",
+    "expected_answer": "En cas de fièvre isolée sans sepsis associé après élimination d’une pathologie endémique."
+  },
+  {
+    "question": "L’antibiothérapie est-elle recommandée dans la bronchite aiguë de l’adulte sain ?",
+    "expected_answer": "Non, elle n’est pas recommandée."
+  },
+  {
+    "question": "Que faire devant une fièvre avec purpura ?",
+    "expected_answer": "Référer en urgence (SAMU) en raison du risque de méningococcémie ou de fièvre hémorragique."
+  },
+  {
+    "question": "Quelle est la conduite à tenir devant une douleur brutale épigastrique irradiant vers l’épaule gauche ?",
+    "expected_answer": "Suspecter une pancréatite ou un infarctus et référer immédiatement au médecin."
+  },
+  {
+    "question": "Quel traitement proposer devant un reflux gastro-œsophagien ?",
+    "expected_answer": "Antiacide trois fois par jour et inhibiteur de la pompe à protons si nécessaire."
+  },
+  {
+    "question": "Quel est le traitement de première intention d’une fièvre mal tolérée en Polynésie française ?",
+    "expected_answer": "Le paracétamol est l’antipyrétique de première intention."
+  },
+  {
+    "question": "Quels sont les signes de gravité imposant une hospitalisation en cas de sepsis ?",
+    "expected_answer": "FR > 24/min, FC > 120/min, TA systolique < 80 mmHg, marbrures, extrémités froides."
+  },
+  {
+    "question": "Quelle est la principale complication redoutée en cas de déshydratation sévère ?",
+    "expected_answer": "Un collapsus circulatoire pouvant entraîner un arrêt cardiaque."
+  },
+  {
+    "question": "Quand faut-il penser à une invagination intestinale aiguë chez l’enfant ?",
+    "expected_answer": "Devant douleurs abdominales spasmodiques, vomissements bilieux, rectorragies et masse abdominale."
+  },
+  {
+    "question": "Que faire devant une douleur articulaire avec état général altéré ?",
+    "expected_answer": "Transférer sans attendre le patient et demander un avis médical."
+  }
+]

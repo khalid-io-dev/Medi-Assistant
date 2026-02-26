@@ -1,0 +1,56 @@
+import pytest
+from unittest.mock import patch, MagicMock
+from app.services.rag_pipeline import initialize_rag_system, create_rag_chain
+
+@patch("app.services.rag_pipeline.load_pdf")
+@patch("app.services.rag_pipeline.split_documents")
+@patch("app.services.rag_pipeline.store_embeddings")
+@patch("app.services.rag_pipeline.create_retriever")
+@patch("app.services.rag_pipeline.create_llm")
+def test_initialize_rag_system_force_recreate(
+    mock_create_llm, 
+    mock_create_retriever, 
+    mock_store_embeddings, 
+    mock_split_documents, 
+    mock_load_pdf
+):
+    mock_load_pdf.return_value = ["doc1"]
+    mock_split_documents.return_value = ["chunk1"]
+    mock_retriever = MagicMock()
+    mock_create_retriever.return_value = mock_retriever
+    mock_llm = MagicMock()
+    mock_create_llm.return_value = mock_llm
+    
+    chain = initialize_rag_system(force_recreate_db=True)
+    
+    mock_load_pdf.assert_called_once()
+    mock_split_documents.assert_called_once()
+    mock_store_embeddings.assert_called_once()
+    mock_create_retriever.assert_called_once()
+    mock_create_llm.assert_called_once()
+    assert chain is not None
+
+@patch("app.services.rag_pipeline.load_pdf")
+@patch("app.services.rag_pipeline.split_documents")
+@patch("app.services.rag_pipeline.store_embeddings")
+@patch("app.services.rag_pipeline.create_retriever")
+@patch("app.services.rag_pipeline.create_llm")
+def test_initialize_rag_system_no_recreate(
+    mock_create_llm, 
+    mock_create_retriever, 
+    mock_store_embeddings, 
+    mock_split_documents, 
+    mock_load_pdf
+):
+    mock_retriever = MagicMock()
+    mock_create_retriever.return_value = mock_retriever
+    mock_llm = MagicMock()
+    mock_create_llm.return_value = mock_llm
+    
+    chain = initialize_rag_system(force_recreate_db=False)
+    
+    mock_load_pdf.assert_not_called()
+    mock_split_documents.assert_not_called()
+    mock_store_embeddings.assert_not_called()
+    mock_create_retriever.assert_called_once()
+    assert chain is not None

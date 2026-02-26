@@ -1,0 +1,212 @@
+services:
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: CliniQ_backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/CliniQ
+      - ENVIRONMENT=development
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - QDRANT_URL=http://vector_db:6333
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      # - VLLM_BASE_URL=http://vllm:8000/v1
+      # - VLLM_MODEL=microsoft/Phi-3-mini-4k-instruct
+    depends_on:
+      db:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      mlflow:
+        condition: service_started
+    networks:
+      - CliniQ_network
+    volumes:
+      - .:/app
+
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  ollama:
+    image: ollama/ollama:latest
+    container_name: CliniQ_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_storage:/root/.ollama
+    networks:
+      - CliniQ_network
+
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  ollama-init:
+    image: ollama/ollama:latest
+    container_name: CliniQ_ollama_init
+    depends_on:
+      - ollama
+    entrypoint: >
+      /bin/sh -c "
+      sleep 5 &&
+      ollama pull nomic-embed-text &&
+      ollama pull llama3.1
+      "
+    networks:
+      - CliniQ_network
+
+    # j'ai runner la commande suivante pour puller le model ollama :
+    # docker exec -it CliniQ_ollama ollama pull nomic-embed-text
+
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  db:
+    image: postgres:15-alpine
+    container_name: CliniQ_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=CliniQ
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - CliniQ_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  vector_db:
+    image: qdrant/qdrant:latest
+    container_name: CliniQ_vectordb
+    ports:
+      - "6333:6333"
+    networks:
+      - CliniQ_network
+    volumes:
+      - qdrant_storage:/qdrant/storage
+
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  mlflow-db:
+    image: postgres:15-alpine
+    container_name: CliniQ__db
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_USER=mlflow
+      - POSTGRES_PASSWORD=mlflow
+      - POSTGRES_DB=mlflow
+    volumes:
+      - mlflow_db_data:/var/lib/postgresql/data
+    networks:
+      - CliniQ_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mlflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.mlflow
+    container_name: CliniQ_mlflow
+    ports:
+      - "5000:5000"
+    depends_on:
+      mlflow-db:
+        condition: service_healthy
+    environment:
+      - MLFLOW_BACKEND_STORE_URI=postgresql://mlflow:mlflow@mlflow-db:5432/mlflow
+      - MLFLOW_ARTIFACT_ROOT=/app/mlruns
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri postgresql://mlflow:mlflow@mlflow-db:5432/mlflow --default-artifact-root /app/mlruns
+    volumes:
+      - ./mlruns:/app/mlruns
+    networks:
+      - CliniQ_network
+    restart: always
+
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  prometheus:
+    image: prom/prometheus
+    container_name: cliniq-prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    ports:
+      - "9090:9090"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    networks:
+      - CliniQ_network
+    restart: always
+
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  grafana:
+    image: grafana/grafana
+    container_name: cliniq-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - CliniQ_network
+    restart: always
+
+  # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cliniq-cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - CliniQ_network
+    restart: unless-stopped
+
+# !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+# vllm:
+#   image: vllm/vllm-openai:v0.6.2
+#   container_name: CliniQ_vllm
+#   # environment:
+#     # - VLLM_TARGET_DEVICE=cpu   # obligatoire
+#   command: >
+#     --model microsoft/Phi-3-mini-4k-instruct
+#     --dtype float32
+#     --max-model-len 4096
+#     --device cpu
+#   ports:
+#     - "8001:8000"
+#   shm_size: '2gb'
+#   volumes:
+#     - ~/.cache/huggingface:/root/.cache/huggingface
+#   networks:
+#     - CliniQ_network
+#   restart: unless-stopped
+
+# !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+networks:
+  CliniQ_network:
+    driver: bridge
+
+# !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+volumes:
+  postgres_data:
+  qdrant_storage:
+  ollama_storage:
+  mlflow_db_data:
+  grafana_data:
