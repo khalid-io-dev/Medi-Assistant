@@ -16,6 +16,7 @@ langchain-ollama
 langchain-core
 qdrant-client
 langchain-qdrant
+chromadb
 pypdf
 email-validator
 passlib==1.7.4
@@ -26,5 +27,9 @@ scikit-learn==1.4.0
 pandas==2.2.0
 deepeval
 prometheus-fastapi-instrumentator==7.0.0
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-instrumentation-fastapi
+opentelemetry-exporter-otlp
 langchain-openai>=0.1.0
 asyncio

@@ -24,12 +24,16 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = "CliniQ_DB"
     DATABASE_URL: str | None = None
     
-    # Qdrant Configuration
+    # Qdrant Configuration (legacy - still supported)
     QDRANT_HOST: str = "localhost"
     QDRANT_PORT: int = 6333
     QDRANT_API_KEY: str | None = None
     QDRANT_COLLECTION_NAME: str = "CliniQ_collection"
     QDRANT_URL: str | None = None 
+    
+    # ChromaDB Configuration (persistent volume path)
+    CHROMA_DB_PATH: str = "/chroma_data"
+    CHROMA_COLLECTION_NAME: str = "cliniq_collection" 
     
     # Embedding Configuration
     EMBEDDING_MODEL_NAME: str = "bge-m3" # ou bien "all-minilm" ou "nomic-embed-text"
@@ -42,6 +46,8 @@ class Settings(BaseSettings):
     # Ollama Configuration
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "llama3.1"
+    # Ngrok endpoint for remote Ollama (used for production deployment)
+    NGROK_OLLAMA_URL: str | None = None
     LLM_NUM_PREDICT: int = 1024
     LLM_REPEAT_PENALTY: float = 1.1
     LLM_TEMPERATURE: float = 0.2

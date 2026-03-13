@@ -4,14 +4,16 @@ from app.utils.logger import logger
 
 
 def create_llm() -> ChatOllama :
-    logger.info(f"☑️☑️ Connectiong to Ollama LLM ({settings.OLLAMA_MODEL}) at {settings.OLLAMA_BASE_URL} ...☑️")
+    # Use Ngrok URL if available, otherwise use local Ollama
+    base_url = settings.NGROK_OLLAMA_URL if settings.NGROK_OLLAMA_URL else settings.OLLAMA_BASE_URL
+    logger.info(f"☑️☑️ Connectiong to Ollama LLM ({settings.OLLAMA_MODEL}) at {base_url} ...☑️")
     
     
     
     try: 
         llm = ChatOllama(
             model = settings.OLLAMA_MODEL,
-            base_url = settings.OLLAMA_BASE_URL, 
+            base_url = base_url, 
             temperature = settings.LLM_TEMPERATURE, 
             num_predict = settings.LLM_NUM_PREDICT,
             top_p = settings.LLM_TOP_P,

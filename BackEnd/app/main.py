@@ -4,9 +4,10 @@ from app.api import documents, chat, user, admin
 from app.core.database import init_db
 from app.services.vector_store import create_qdrant_collection
 from prometheus_fastapi_instrumentator import Instrumentator
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from app.telemetry import tracer
 from contextlib import asynccontextmanager
 from fastapi import Request
-from prometheus_fastapi_instrumentator import Instrumentator
 from app.utils.metrics import API_REQUEST_TOTAL
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -59,6 +60,9 @@ async def count_requests(request: Request, call_next):
 
 # Instrumentator pour exposer les metrics existantes (CPU, RAM, HTTP Latency)
 instrumentator = Instrumentator().instrument(app).expose(app)
+
+# OpenTelemetry instrumentation
+FastAPIInstrumentor.instrument_app(app)
 # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 @app.get("/")
 async def root():

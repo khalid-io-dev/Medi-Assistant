@@ -67,9 +67,9 @@ def evaluate_rag(query: str, response: str, context: list):
             metrics["recall_at_k"] = recall_metric.score
             logger.info(f"☑️☑️🟢🟢 Recall@k: {recall_metric.score} ☑️")
         except Exception as e:
-            logger.warning(f"🔔🔔🟡🟡 Recall@k failed: {e} 🟡🟡🔔🔔")
+            logger.warning(f"Recall@k failed: {e}")
 
     except Exception as e:
-        logger.error(f"⛔⛔❌❌ Evaluation failed: {e} ⛔")
+        logger.error(f" Evaluation failed: {e} ")
     
     return metrics

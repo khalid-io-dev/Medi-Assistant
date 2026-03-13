@@ -16,6 +16,7 @@ RUN pip install -r requirements.txt
 # Copier d'abord les fichiers nécessaires au build
 COPY app/ ./app/
 COPY data/ ./data/
+COPY monitoring/ ./monitoring/
 
 # Copier les autres fichiers seulement si nécessaires
 COPY .env.example .env.example

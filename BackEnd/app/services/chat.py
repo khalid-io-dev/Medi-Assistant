@@ -1,4 +1,4 @@
-from app.services.rag_pipeline import initialize_rag_system
+from app.services.rag_pipeline import initialize_rag_system, invoke_rag_with_tracing
 from app.utils.logger import logger
 from app.core.config import settings
 from datetime import datetime
@@ -86,7 +86,7 @@ async def ask_question(question: str, top_k: int = settings.RETRIEVAL_TOP_K, alp
             alpha=alpha
         )
         
-        res = chain.invoke(question)
+        res = invoke_rag_with_tracing(chain, question)
         
         answer = res["answer"]
         source_docs = res["context"]

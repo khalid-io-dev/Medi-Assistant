@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from app.services.rag_pipeline import initialize_rag_system, create_rag_chain
+from app.services.rag_pipeline import initialize_rag_system, create_rag_chain, invoke_rag_with_tracing
 
 @patch("app.services.rag_pipeline.load_pdf")
 @patch("app.services.rag_pipeline.split_documents")
@@ -54,3 +54,35 @@ def test_initialize_rag_system_no_recreate(
     mock_store_embeddings.assert_not_called()
     mock_create_retriever.assert_called_once()
     assert chain is not None
+
+@patch("app.services.rag_pipeline.tracer")
+def test_invoke_rag_with_tracing_success(mock_tracer):
+    # Setup mock chain
+    mock_chain = MagicMock()
+    mock_chain.invoke.return_value = {"answer": "test answer", "context": []}
+    
+    # Setup mock span
+    mock_span = MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+    
+    result = invoke_rag_with_tracing(mock_chain, "test question")
+    
+    assert result is not None
+    mock_span.set_attribute.assert_any_call("question", "test question")
+    mock_span.set_attribute.assert_any_call("success", True)
+
+@patch("app.services.rag_pipeline.tracer")
+def test_invoke_rag_with_tracing_error(mock_tracer):
+    # Setup mock chain to raise exception
+    mock_chain = MagicMock()
+    mock_chain.invoke.side_effect = Exception("Test error")
+    
+    # Setup mock span
+    mock_span = MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+    
+    with pytest.raises(Exception):
+        invoke_rag_with_tracing(mock_chain, "test question")
+    
+    mock_span.set_attribute.assert_any_call("question", "test question")
+    mock_span.set_attribute.assert_any_call("success", False)

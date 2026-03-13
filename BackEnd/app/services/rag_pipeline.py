@@ -9,6 +9,8 @@ from app.services.utils import format_docs
 from app.utils.logger import logger
 from app.services.retriever import create_retriever
 from app.core.config import settings
+from app.telemetry import tracer
+import time
 
 
 # !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -62,3 +64,40 @@ def initialize_rag_system(force_recreate_db=False, retriever_top_k: int = settin
     rag_chain = create_rag_chain(retriever=retriever, llm=llm)
     
     return rag_chain
+
+# !::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+def invoke_rag_with_tracing(rag_chain, question: str):
+    """
+    Invoke RAG chain with OpenTelemetry tracing for latency tracking and error capture.
+    
+    Args:
+        rag_chain: The RAG chain to invoke
+        question: The question to ask
+        
+    Returns:
+        The response from the RAG chain
+    """
+    with tracer.start_as_current_span("rag_pipeline_invocation") as span:
+        span.set_attribute("question", question)
+        
+        start_time = time.time()
+        
+        try:
+            response = rag_chain.invoke(question)
+            
+            latency = time.time() - start_time
+            span.set_attribute("latency_seconds", latency)
+            span.set_attribute("success", True)
+            
+            logger.info(f"RAG latency: {latency:.4f} seconds")
+            
+            return response
+            
+        except Exception as e:
+            latency = time.time() - start_time
+            span.set_attribute("latency_seconds", latency)
+            span.set_attribute("success", False)
+            span.set_attribute("error", str(e))
+            
+            logger.error(f"RAG error: {e}")
+            raise
